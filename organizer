@@ -1,0 +1,43 @@
+import os
+import shutil
+
+# 1. Define the directory to clean (e.g., your Downloads folder)
+# Replace 'path/to/your/downloads' with your actual path
+directory = os.path.expanduser("~/Downloads")
+
+# 2. Map file extensions to folder names
+extensions = {
+    ".jpg": "Images",
+    ".png": "Images",
+    ".gif": "Images",
+    ".pdf": "Documents",
+    ".docx": "Documents",
+    ".txt": "Documents",
+    ".mp4": "Videos",
+    ".zip": "Archives",
+}
+
+def organize_files():
+    for filename in os.listdir(directory):
+        filepath = os.path.join(directory, filename)
+
+        # Skip if it's a folder
+        if os.path.isdir(filepath):
+            continue
+
+        # Get the file extension
+        ext = os.path.splitext(filename)[1].lower()
+
+        if ext in extensions:
+            dest_folder = os.path.join(directory, extensions[ext])
+            
+            # Create the folder if it doesn't exist
+            os.makedirs(dest_folder, exist_ok=True)
+            
+            # Move the file
+            print(f"Moving {filename} to {extensions[ext]}...")
+            shutil.move(filepath, os.path.join(dest_folder, filename))
+
+if __name__ == "__main__":
+    organize_files()
+    print("Done! Your folder is clean.")
